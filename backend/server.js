@@ -6,6 +6,8 @@ const cors = require("cors");
 const path = require("path");
 const { fileURLToPath } = require("url");
 const errorHandler = require("./middleware/errorHandler");
+const authRoutes = require("./routes/authRoutes");
+const documentRoutes = require("./routes/documentRoutes");
 const connectDB = require("./config/db");
 
 //Initialize express app
@@ -31,6 +33,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //routes
+
+app.use("/api/auth", authRoutes);
+app.use("/api/documents", documentRoutes);
 
 app.use(errorHandler);
 

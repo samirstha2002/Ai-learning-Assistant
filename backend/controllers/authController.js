@@ -15,6 +15,49 @@ const generateToken = (id) => {
 
 const register = async (req, res, next) => {
   try {
+    const { username, email, password } = req.body;
+
+    //check if user exists
+
+    const userExists = await User.findOne({
+      $or: [{ email }, { username }],
+    });
+
+    if (userExists) {
+      return res.status(400).json({
+        success: false,
+        error:
+          userExists.email === email
+            ? "Email already  registered"
+            : "Username already taken",
+        statusCode: 400,
+      });
+    }
+
+    // create user
+    const user = await User.create({
+      username,
+      email,
+      password,
+    });
+
+    // Generate token
+
+    const token = generateToken(user._id);
+    res.status(201).json({
+      success: true,
+      data: {
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          profileImage: user.profileImage,
+          createdAt: user.createdAt,
+        },
+        token,
+      },
+      message: "User registered successfully",
+    });
   } catch (error) {
     next(error);
   }
@@ -24,24 +67,156 @@ const register = async (req, res, next) => {
 //@route POST /api/auth/login
 //@access Public
 
-const login = async (req, res, next) => {};
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    //validate input
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        error: "Please provide email and password",
+        statusCode: 400,
+      });
+    }
+
+    // check for user (include password for comparision)
+
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: "Invalid credentials",
+        statusCode: 401,
+      });
+    }
+
+    const isMatch = await user.matchPassword(password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        error: "Invalid credentials",
+        statusCode: 401,
+      });
+    }
+
+    // generate tooken
+    const token = generateToken(user._id);
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+
+        profileImage: user.profileImage,
+      },
+      token,
+      message: "Login Successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 //@desc Get user PROFILE
 //@ROUTE Get /api/auth/Profile
 //@acces Private
 
-const getProfile = async (req, res, next) => {};
+const getProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    res.status(200).json({
+      success: true,
+      data: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        profileImage: user.profileImage,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 //@desc Update user profile
 //@route Put /api/auth/profile
 //access Private
 
-const updateProfile = async (req, res, next) => {};
+const updateProfile = async (req, res, next) => {
+  try {
+    const { username, email, profileImage } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (profileImage) user.profileImage = profileImage;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        profileImage: user.profileImage,
+      },
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 //@desc Change Password
 //@route POST/API/AUTH/CHANGEPASSWORD
 //@ACCESS PRIVATE
 
-const changePassword = async (req, res, next) => {};
+const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: "Please provide current and new password",
+        statusCode: 400,
+      });
+    }
+
+    const user = await User.findById(req.user._id).select("+password");
+
+    //check current password
+
+    const isMatch = await user.matchPassword(currentPassword);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        error: "Current Password is incorrect",
+        statusCode: 401,
+      });
+    }
+
+    //update password
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = { login, register, getProfile, updateProfile, changePassword };

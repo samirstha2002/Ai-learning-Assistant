@@ -76,13 +76,13 @@ const quizSchema = new mongoose.Schema(
       default: 0,
     },
     totalQuestions: {
-      tyep: Number,
+      type: Number,
       required: true,
     },
 
     completedAt: {
       type: Date,
-      default: true,
+      default: Date.now,
     },
   },
   {
