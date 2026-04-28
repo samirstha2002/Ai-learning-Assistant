@@ -17,10 +17,9 @@ import QuizResultPage from "./pages/Quizzes/QuizResultPage";
 import DocumentDetailsPage from "./pages/Documents/DocumentDetailsPage";
 import DocumentListsPage from "./pages/Documents/DocumentListsPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { useAuth } from "./context/authContext";
 function App() {
-  const isAuthenticated = true;
-  const loading = false;
-
+  const { isAuthenticated, loading } = useAuth();
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen   ">
