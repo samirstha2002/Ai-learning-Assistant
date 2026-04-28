@@ -226,7 +226,7 @@ const deleteDocument = async (req, res, next) => {
 
     //delete document
 
-    await Document.deleteOne();
+    await document.deleteOne();
 
     res.status(200).json({
       success: true,

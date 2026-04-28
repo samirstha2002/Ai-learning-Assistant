@@ -82,7 +82,7 @@ const quizSchema = new mongoose.Schema(
 
     completedAt: {
       type: Date,
-      default: Date.now,
+      default: null,
     },
   },
   {

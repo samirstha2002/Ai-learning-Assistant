@@ -5,10 +5,15 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const { fileURLToPath } = require("url");
+const connectDB = require("./config/db");
+
 const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 const documentRoutes = require("./routes/documentRoutes");
-const connectDB = require("./config/db");
+const aiRoutes = require("./routes/aiRoutes");
+const flashcardRoutes = require("./routes/flashcardRoutes");
+const quizRoutes = require("./routes/quizRoutes");
+const progressRoutes = require("./routes/progressRoutes");
 
 //Initialize express app
 const app = express();
@@ -36,6 +41,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/documents", documentRoutes);
+app.use("/api/flashcards", flashcardRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/quizzes", quizRoutes);
+app.use("/api/progress", progressRoutes);
 
 app.use(errorHandler);
 
