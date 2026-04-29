@@ -112,7 +112,7 @@ function DashboardPage() {
         {/* Recent Activity Section*/}
         <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-2xl shadow-xl shadow-slate-200/50  ">
           <div className="flex items-center gap-3 mb-6">
-            <div classname="w-10 h-10 rounded-xl bg-linear-to-br from-slate-200 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-slate-200 flex items-center justify-center">
               <Clock className="w-5 h-5 text-slate-600" strokeWidth={2} />
             </div>
             <h3 className="text-xl font-medium text-slate-900 tracking-tight">
@@ -137,7 +137,7 @@ function DashboardPage() {
                   id: quiz._id,
                   description: quiz.title,
                   timestamp: quiz.lastAttempted,
-                  link: `/quizzess/${quiz._id}`,
+                  link: `/quizzes/${quiz._id}`,
                   type: "quiz",
                 })),
               ]
@@ -145,7 +145,7 @@ function DashboardPage() {
                 .map((activity, index) => (
                   <div
                     key={activity.id || index}
-                    className="group flex items-center hustify-between p-4 rounded-xl bg-slate-50/50 border border-slate-200/60 hover:bg-white  hover:border-slate-300/60 hover:shadow-md transition-all duration-200"
+                    className="group flex items-center justify-between p-4 rounded-xl bg-slate-50/50 border border-slate-200/60 hover:bg-white  hover:border-slate-300/60 hover:shadow-md transition-all duration-200"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
