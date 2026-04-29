@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import authService from "../../services/authService";
 function LoginPage() {
-  const [email, setEmail] = useState("Suminastha291@gmail.com");
-  const [password, setPassword] = useState("Test@1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
