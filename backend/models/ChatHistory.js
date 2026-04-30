@@ -24,7 +24,7 @@ const chatHistorySchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-        timeStamp: {
+        timestamp: {
           type: Date,
           default: Date.now,
         },
@@ -42,9 +42,12 @@ const chatHistorySchema = new mongoose.Schema(
 
 // index for faster queries
 
-chatHistorySchema.index({
-  userId: 1,
-  documentId: 1,
-});
+chatHistorySchema.index(
+  {
+    userId: 1,
+    documentId: 1,
+  },
+  { unique: true },
+);
 
 module.exports = mongoose.model("ChatHistory", chatHistorySchema);

@@ -205,12 +205,18 @@ const chat = async (req, res, next) => {
     const relevantChunks = findRelevantChunks(document.chunks, question, 3);
     const chunkIndices = relevantChunks.map((c) => c.chunkIndex);
 
-    //get or create chat history
-    let chatHistory = await ChatHistory.create({
+    let chatHistory = await ChatHistory.findOne({
       userId: req.user._id,
       documentId: document._id,
-      messages: [],
     });
+
+    if (!chatHistory) {
+      chatHistory = new ChatHistory({
+        userId: req.user._id,
+        documentId: document._id,
+        messages: [],
+      });
+    }
 
     //generate response using gemini
     const answer = await geminiService.chatWithContext(
@@ -326,7 +332,7 @@ const getChatHistory = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         data: [], //return empty array if no chathistory,
-        message: "No chat history found fpr this document",
+        message: "No chat history found f0r this document",
       });
     }
 
