@@ -5,6 +5,7 @@ import { useState } from "react";
 import { BookOpen, Lightbulb, Sparkles } from "lucide-react";
 import Button from "../common/Button";
 import MarkdownRenderer from "../common/MarkdownRenderer";
+import Modal from "../common/Modal";
 function AIActions() {
   const { id: documentId } = useParams();
   const [loadingAction, setLoadingAction] = useState(null);
@@ -16,12 +17,14 @@ function AIActions() {
   const handleGenerateSummary = async () => {
     setLoadingAction("summary");
     try {
-      const { summary } = await aiService.generateSummary(documentId);
+      const res = await aiService.generateSummary(documentId);
+
+      const summary = res.data.summary; // ✅ FIXED
       setModalTitle("Generated Summary");
       setModalContent(summary);
       setIsModalOpen(true);
     } catch (error) {
-      toast.error("Failed to generate summary.", error);
+      toast.error(error?.message || "Failed to generate summary.");
     } finally {
       setLoadingAction(null);
     }
@@ -44,7 +47,7 @@ function AIActions() {
       setIsModalOpen(true);
       setConcept("");
     } catch (error) {
-      toast.error("Failed to explain concept.", error);
+      toast.error(error?.message || "Failed to explain concept.");
     } finally {
       setLoadingAction(null);
     }
@@ -94,9 +97,8 @@ function AIActions() {
               >
                 {loadingAction === "summary" ? (
                   <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin">
-                      Loading...
-                    </div>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Loading...
                   </span>
                 ) : (
                   "Summarize"
