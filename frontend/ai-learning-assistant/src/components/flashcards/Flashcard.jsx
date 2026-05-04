@@ -60,7 +60,7 @@ function Flashcard({ flashcard, onToggleStar }) {
 
         {/* Back of card(Answer) */}
         <div
-          className="absolute inset-0 w-full h-full bg-white/80 backdrop-blur-xl border-2 border-slate-200/60 rounded-2xl shadow-xl shadow-slate-200/50 p-8 flex flex-col justify-between"
+          className="absolute inset-0 w-full h-full bg-linear-to-br from-emerald-500 to-teal-500 border-2 border-emerald-400/60 rounded-2xl shadow-xl  shadow-emerald-500/30 p-8 flex flex-col justify-between "
           style={{
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
@@ -68,7 +68,7 @@ function Flashcard({ flashcard, onToggleStar }) {
           }}
         >
           {/* {Star Button} */}
-          <div className="flex items-start justify-between">
+          <div className="flex justify-end">
             {/* <div className="bg-slate-100 text-[10px] text-slate-600 rounded px-4 py-1 uppercase ">
               {flashcard?.difficulty}
             </div> */}
@@ -88,14 +88,14 @@ function Flashcard({ flashcard, onToggleStar }) {
           </div>
           {/* Answer Content */}
           <div className="flex-1 flex items-center justify-center px-4 py-6">
-            <p className="text-lg font-semibold text-slate-900 text-center leading-relaxed">
-              {flashcard.question}
+            <p className="text-base font-medium text-white text-center leading-relaxed">
+              {flashcard.answer}
             </p>
           </div>
           {/* Flip Indicator */}
-          <div className="flex items-center justify-center gap-2 text-xs text-slate-400 font-medium">
+          <div className="flex items-center justify-center gap-2 text-xs text-white/70 font-medium">
             <RotateCcw className="w-3.5 h-3.5" strokeWidth={2} />
-            <span>Click to reveal answer</span>
+            <span>Click to see question</span>
           </div>
         </div>
       </div>

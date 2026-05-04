@@ -87,6 +87,7 @@ function FlashcardManager({ documentId }) {
     try {
       await flashcardService.reviewFlashcard(currentCard._id, index);
       toast.success("Flashcard reviewed!");
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error("Failed to review flashcard.");
     }
