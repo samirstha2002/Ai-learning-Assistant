@@ -54,7 +54,7 @@ function App() {
           <Route path="/documents/:id/flashcards" element={<FlashcardPage />} />
           <Route path="/quizzes/:quizId" element={<QuizTakenPage />} />
           <Route path="/quizzes/:quizId/results" element={<QuizResultPage />} />
-          <Route path="/profile" lement={<ProfilePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </Router>
