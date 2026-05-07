@@ -50,7 +50,7 @@ function FlashcardsListPage() {
 
   return (
     <div>
-      <PageHeader title="All FlahcaardSets" />
+      <PageHeader title="All FlashcardSets" />
       {renderContent()}
     </div>
   );
